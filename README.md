@@ -1,16 +1,18 @@
 ## 🛠️ Tech Stack
 
 - TypeScript
+- Node.js
 - Express.js
 - Prisma (ORM)
 - PostgreSQL
 - JSON Web Tokens
-- Zod (Schema validation)
 
 ## Prerequisites for Installation
 
+- Node.js
 - Docker
 - Docker Compose
+- PostgreSQL
 
 ## 🏗️ Installation using docker
 1. Clone the repository
