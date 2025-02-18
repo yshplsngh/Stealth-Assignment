@@ -9,6 +9,8 @@ import { deserializeUser } from "./utils/middleware/deserializeUser";
 import rateLimiter from "./utils/middleware/rateLimit";
 import { userRequired } from "./utils/middleware/roleCheck";
 
+import authRouter from "./router/authRouter";
+
 const app = express();
 
 app.set('trust proxy', 1);
@@ -28,7 +30,7 @@ app.all('/', (_req: Request, res: Response) => {
         RunTime: process.uptime(),
     });
 });
-app.use('/api/v1/auth', rateLimiter, authRouter)
+app.use('/api/auth', rateLimiter, authRouter)
 
 
 process.on('unhandledRejection', uncaughtExceptionHandler);
