@@ -10,6 +10,7 @@ import rateLimiter from "./utils/middleware/rateLimit";
 import { userRequired } from "./utils/middleware/roleCheck";
 
 import authRouter from "./router/authRouter";
+import userRouter from "./router/userRouter";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.all('/', (_req: Request, res: Response) => {
     });
 });
 app.use('/api/auth', rateLimiter, authRouter)
+app.use('/api/users', rateLimiter, userRouter)
 
 
 process.on('unhandledRejection', uncaughtExceptionHandler);
