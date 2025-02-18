@@ -6,7 +6,16 @@ import { userProfileSchema } from '../types/userTypes';
 
 const router = express.Router();
 
-router.post('/', userRequired, async(req: Request, res: Response, next: NextFunction) => {
+/**
+ * @route POST /api/users
+ * @description Create a new user profile
+ * @access Private
+ * @body {string} name - The name of the user
+ * @body {string} email - The email of the user
+ * @body {string} role - The role of the user
+ * @returns {"message": "User profile created successfully", "user": {id: number, email: string, name: string, role: string}}
+ */
+router.post('/', userRequired, async (req: Request, res: Response, next: NextFunction) => {
     const isValid = userProfileSchema.safeParse(req.body);
     if (!isValid.success) {
         next(new createError("Invalid request body", 400));
@@ -29,7 +38,13 @@ router.post('/', userRequired, async(req: Request, res: Response, next: NextFunc
     })
 })
 
-router.get('/', userRequired, async(req: Request, res: Response, next: NextFunction) => {
+/**
+ * @route GET /api/users
+ * @description Fetch all user profiles
+ * @access Private
+ * @returns {"message": "Users fetched successfully", "users": [{id: number, email: string, name: string, role: string}]}
+ */
+router.get('/', userRequired, async (req: Request, res: Response, next: NextFunction) => {
     const users = await prisma.userProfile.findMany();
     res.status(200).json({
         message: "Users fetched successfully",
@@ -37,7 +52,14 @@ router.get('/', userRequired, async(req: Request, res: Response, next: NextFunct
     })
 })
 
-router.get('/:id', userRequired, async(req: Request, res: Response, next: NextFunction) => {
+/**
+ * @route GET /api/users/:id
+ * @description Fetch a single user profile
+ * @access Private
+ * @param {number} id - The id of the user
+ * @returns {"message": "User fetched successfully", "user": {id: number, email: string, name: string, role: string}}
+ */
+router.get('/:id', userRequired, async (req: Request, res: Response, next: NextFunction) => {
     if (!req.params.id) {
         next(new createError("User id is required", 400));
         return;
@@ -57,7 +79,17 @@ router.get('/:id', userRequired, async(req: Request, res: Response, next: NextFu
     })
 })
 
-router.put('/:id', userRequired, async(req: Request, res: Response, next: NextFunction) => {
+/**
+ * @route PUT /api/users/:id
+ * @description Update a user profile
+ * @access Private
+ * @param {number} id - The id of the user
+ * @body {string} name - The name of the user
+ * @body {string} email - The email of the user
+ * @body {string} role - The role of the user
+ * @returns {"message": "User updated successfully", "user": {id: number, email: string, name: string, role: string}}
+ */
+router.put('/:id', userRequired, async (req: Request, res: Response, next: NextFunction) => {
     if (!req.params.id) {
         next(new createError("User id is required", 400));
         return;
@@ -78,7 +110,14 @@ router.put('/:id', userRequired, async(req: Request, res: Response, next: NextFu
     })
 })
 
-router.delete('/:id', adminRequired, async(req: Request, res: Response, next: NextFunction) => {
+/**
+ * @route DELETE /api/users/:id
+ * @description Delete a user profile
+ * @access Private
+ * @param {number} id - The id of the user
+ * @returns {"message": "User deleted successfully"}
+ */
+router.delete('/:id', adminRequired, async (req: Request, res: Response, next: NextFunction) => {
     if (!req.params.id) {
         next(new createError("User id is required", 400));
         return;

@@ -19,15 +19,10 @@ export const tokenCookieOptions: CookieOptions = {
 /**
  * @description User registration
  * @route POST /api/auth/register
- * @param {string} name - The name of the user
- * @param {string} email - The email of the user
- * @param {string} password - The password of the user
- * @example {
-    "name":"Yashpal Singh",
-    "email":"yashpal9rx@gmail.com",
-    "password":"pass9rx",
-    }
-* @returns {"message": "User created successfully"}
+ * @body {string} name - The name of the user
+ * @body {string} email - The email of the user
+ * @body {string} password - The password of the user
+ * @returns {"message": "User created successfully"}
  */
 router.post('/signup', async (req: Request, res: Response, next: NextFunction) => {
     const isValid = registerSchema.safeParse(req.body);
@@ -60,13 +55,8 @@ router.post('/signup', async (req: Request, res: Response, next: NextFunction) =
 /**
  * @description User login
  * @route POST /api/auth/login
- * @param {string} email - The email of the user
- * @param {string} password - The password of the user
- * 
- * @example {
-    "email":"yashpal9rx@gmail.com",
-    "password":"pass9rx"
-    }
+ * @body {string} email - The email of the user
+ * @body {string} password - The password of the user
  * @returns {"message": "User logged in successfully"}
  */
 router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
