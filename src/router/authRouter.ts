@@ -74,7 +74,7 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
         next(new createError("Invalid credentials", 404));
         return;
     }
-    const matchPassword = bcrypt.compare(isValid.data.password, userFound.password);
+    const matchPassword = await bcrypt.compare(isValid.data.password, userFound.password);
     if (!matchPassword) {
         next(new createError("Invalid credentials", 400));
         return;

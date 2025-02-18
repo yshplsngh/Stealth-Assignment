@@ -18,7 +18,7 @@ const router = express.Router();
 router.post('/', userRequired, async (req: Request, res: Response, next: NextFunction) => {
     const isValid = userProfileSchema.safeParse(req.body);
     if (!isValid.success) {
-        next(new createError("Invalid request body", 400));
+        next(isValid.error);
         return;
     }
     const emailExists = await prisma.userProfile.findUnique({
@@ -32,7 +32,7 @@ router.post('/', userRequired, async (req: Request, res: Response, next: NextFun
         data: isValid.data
     })
 
-    res.status(200).json({
+    res.status(201).json({
         message: "User profile created successfully",
         user
     })
@@ -60,7 +60,7 @@ router.get('/', userRequired, async (req: Request, res: Response, next: NextFunc
  * @returns {"message": "User fetched successfully", "user": {id: number, email: string, name: string, role: string}}
  */
 router.get('/:id', userRequired, async (req: Request, res: Response, next: NextFunction) => {
-    if (!req.params.id) {
+    if (!req.params.id || isNaN(Number(req.params.id))) {
         next(new createError("User id is required", 400));
         return;
     }
@@ -90,14 +90,14 @@ router.get('/:id', userRequired, async (req: Request, res: Response, next: NextF
  * @returns {"message": "User updated successfully", "user": {id: number, email: string, name: string, role: string}}
  */
 router.put('/:id', userRequired, async (req: Request, res: Response, next: NextFunction) => {
-    if (!req.params.id) {
+    if (!req.params.id || isNaN(Number(req.params.id))) {
         next(new createError("User id is required", 400));
         return;
     }
     const id = +req.params.id;
     const isValid = userProfileSchema.safeParse(req.body);
     if (!isValid.success) {
-        next(new createError("Invalid request body", 400));
+        next(isValid.error);
         return;
     }
     const user = await prisma.userProfile.update({
